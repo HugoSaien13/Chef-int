@@ -8,11 +8,10 @@ from recetas import BASE_DE_DATOS_RECETAS, INGREDIENTES_PLATAFORMA
 # Configuración de página
 st.set_page_config(page_title="Nevera.ai | Cocina Inteligente", page_icon="🔥", layout="wide")
 
-# --- INYECCIÓN DE DISEÑO "MIDNIGHT PREMIUM RESPONSIVO" ---
+# --- INYECCIÓN DE DISEÑO PREMIUM ADAPTADO A MÓVILES ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Plus+Jakarta+Sans:wght@500;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
     /* Fondo oscuro inmersivo */
     .stApp {
@@ -26,42 +25,24 @@ st.markdown("""
     footer {visibility: hidden;}
     header {background: transparent !important;}
 
-    /* Títulos generales */
     h1, h2, h3, h4, p, label, li {
         color: #F8FAFC !important;
         font-family: 'Outfit', sans-serif !important;
     }
-    
-    .material-symbols-rounded, .stIcon {
-        font-family: 'Material Symbols Rounded' !important;
-    }
 
-    /* BARRA LATERAL (SIDEBAR) Y FILTROS */
+    /* BARRA LATERAL compacta */
     [data-testid="stSidebar"] {
         background-color: #0B0E14 !important;
         border-right: 1px solid #1D2330 !important;
     }
     
-    /* FILTRO FITNESS: Paneles elegantes */
+    /* FILTRO FITNESS */
     div[role="radiogroup"] > label {
         background: rgba(29, 35, 48, 0.5) !important;
         padding: 10px 15px !important;
         border-radius: 12px !important;
         border: 1px solid #2A3143 !important;
         margin-bottom: 8px !important;
-        cursor: pointer !important;
-        transition: all 0.2s ease !important;
-    }
-    div[role="radiogroup"] > label:hover {
-        border-color: #FF5722 !important;
-        background: rgba(255, 87, 34, 0.08) !important;
-        transform: translateX(4px) !important;
-    }
-    div[role="radiogroup"] label p, div[role="radiogroup"] label span {
-        color: #F8FAFC !important;
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
-        font-weight: 600 !important;
-        margin: 0 !important;
     }
 
     /* Pestañas (Tabs) */
@@ -69,87 +50,61 @@ st.markdown("""
         background-color: #131823 !important;
         border-radius: 16px;
         padding: 5px;
-        gap: 10px;
+        gap: 5px;
     }
     .stTabs [data-baseweb="tab"] {
         color: #94A3B8 !important;
         font-weight: 700 !important;
         border: none !important;
         border-radius: 12px !important;
-        padding: 10px 24px !important;
-        transition: all 0.3s ease !important;
+        padding: 8px 16px !important;
     }
     .stTabs [data-baseweb="tab"][aria-selected="true"] {
         background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%) !important;
         color: #FFFFFF !important;
-        box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4) !important;
     }
 
-    /* Contenedores y Tarjetas */
+    /* Contenedor Principal */
     div[data-testid="stVerticalBlock"] > div[border="true"] {
         background: rgba(19, 24, 35, 0.6) !important;
         backdrop-filter: blur(10px);
         border: 1px solid #2A3143 !important;
-        border-radius: 24px !important;
-        padding: 30px !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+        border-radius: 20px !important;
+        padding: 20px !important;
     }
 
-    /* Desplegables de Recetas (Expanders) */
-    div[data-testid="stExpander"] {
+    /* Tarjetas de Recetas unificadas (Ancho completo) */
+    .receta-card {
         background: linear-gradient(145deg, #161B27 0%, #0F131D 100%) !important;
         border: 1px solid #2A3143 !important;
         border-radius: 16px !important;
-        margin-bottom: 16px !important;
-        transition: all 0.3s ease !important;
+        padding: 20px;
+        margin-bottom: 20px;
     }
-    div[data-testid="stExpander"]:hover {
-        transform: translateY(-4px) !important;
+    .receta-card:hover {
         border-color: #FF5722 !important;
-        box-shadow: 0 10px 25px rgba(255, 87, 34, 0.15) !important;
-    }
-    div[data-testid="stExpander"] summary {
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
     }
     
-    .stInfo {
-        background: #1A2130 !important;
-        border-left: 4px solid #00FFA3 !important;
-        color: #E2E8F0 !important;
-        border-radius: 8px !important;
+    /* Bloque de instrucciones limpio */
+    .instrucciones-box {
+        background-color: #1A2130 !important;
+        padding: 15px;
+        border-radius: 10px;
+        border-left: 4px solid #00FFA3;
+        margin-top: 10px;
+        font-size: 0.95rem;
     }
 
-    span[data-baseweb="tag"] {
-        background: linear-gradient(135deg, #2A3143 0%, #1D2330 100%) !important;
-        border: 1px solid #3B455D !important;
-        border-radius: 10px !important;
-        padding: 4px 12px !important;
-    }
-    span[data-baseweb="tag"] span {
-        color: #00FFA3 !important;
-        font-weight: 700 !important;
-    }
-
-    /* BOTONES */
+    /* BOTONES COMPLETOS PARA EL PULGAR */
     div.stButton > button:first-child {
         background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%) !important;
         color: #FFFFFF !important;
         border: none !important;
         border-radius: 14px !important;
         padding: 0.8rem 2rem !important;
-        font-family: 'Outfit', sans-serif !important;
         font-weight: 900 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 1px !important;
-        box-shadow: 0 8px 25px rgba(255, 87, 34, 0.4) !important;
-        transition: all 0.2s ease !important;
-    }
-    div.stButton > button:first-child:hover {
-        transform: translateY(-3px) scale(1.02) !important;
-        box-shadow: 0 12px 30px rgba(255, 87, 34, 0.6) !important;
-        background: linear-gradient(135deg, #FF7043 0%, #FFB74D 100%) !important;
+        width: 100% !important; /* Ancho completo por defecto */
+        box-shadow: 0 6px 20px rgba(255, 87, 34, 0.3) !important;
     }
     
     div[data-testid="stHorizontalBlock"] div.stButton > button:first-child {
@@ -159,56 +114,27 @@ st.markdown("""
         box-shadow: none !important;
     }
 
+    /* Badges de categorías */
     .badge {
         display: inline-block;
-        padding: 6px 14px;
-        border-radius: 8px;
-        font-size: 0.8rem;
-        font-weight: 900;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
     .b-fuerza { background: rgba(0, 255, 163, 0.1); color: #00FFA3; border: 1px solid rgba(0, 255, 163, 0.3); }
     .b-def { background: rgba(0, 229, 255, 0.1); color: #00E5FF; border: 1px solid rgba(0, 229, 255, 0.3); }
     .b-cardio { background: rgba(255, 214, 0, 0.1); color: #FFD600; border: 1px solid rgba(255, 214, 0, 0.3); }
     .b-cheat { background: rgba(255, 64, 129, 0.1); color: #FF4081; border: 1px solid rgba(255, 64, 129, 0.3); }
-    
-    img { border-radius: 12px; }
 
-    /* =========================================================================
-       🚨 SMARTPHONE MEDIA QUERY: Parámetros específicos para móviles (Pantallas < 768px)
-       ========================================================================= */
+    /* MEDIA QUERY RESPONSIVA */
     @media (max-width: 768px) {
-        /* Hacemos que las dos columnas de resultados se apilen verticalmente en el móvil */
-        div[data-testid="stHorizontalBlock"] {
-            flex-direction: column !important;
-            gap: 15px !important;
-        }
-        div[data-testid="stHorizontalBlock"] > div {
-            width: 100% !important; /* Fuerza a ocupar todo el ancho del móvil */
-        }
-        /* Reducimos el tamaño de la cabecera para que no ocupe toda la pantalla del teléfono */
-        .hero-title {
-            font-size: 2.2rem !important;
-        }
-        .hero-subtitle {
-            font-size: 1rem !important;
-        }
-        /* Hacemos los botones más cómodos para pulsar con el dedo ocupando el ancho completo */
-        div.stButton > button:first-child {
-            width: 100% !important;
-            padding: 1rem 2rem !important;
-        }
-        /* Ajuste de padding en contenedores para ganar espacio útil */
-        div[data-testid="stVerticalBlock"] > div[border="true"] {
-            padding: 15px !important;
-        }
-        /* Estilo compacto para los selectores de pestañas en móvil */
-        .stTabs [data-baseweb="tab"] {
-            padding: 8px 12px !important;
-            font-size: 0.85rem !important;
-        }
+        .hero-title { font-size: 2.2rem !important; }
+        .hero-subtitle { font-size: 1rem !important; }
+        div[data-testid="stVerticalBlock"] > div[border="true"] { padding: 15px !important; }
+        .stTabs [data-baseweb="tab"] { padding: 6px 10px !important; font-size: 0.8rem !important; }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -253,24 +179,19 @@ def guardar_receta_usuario(nueva_receta):
         json.dump(recetas_actuales, f, ensure_ascii=False, indent=4)
 
 def buscar_recetas_en_internet(lista_ingredientes):
-    # ⚠️ PEGA AQUÍ TU CLAVE REAL DE SPOONACULAR
     API_KEY = "ecab73f0fc0049828ba7f97537a20e77" 
-    
     if API_KEY == "TU_API_KEY_AQUI":
-        return {"error": "Falta la API Key. Regístrate en spoonacular.com/food-api y pon tu clave en el código."}
+        return {"error": "Falta la API Key."}
         
-    ingredientes_ingles = [TRADUCTOR_API.get(ing, ing) for ing in lista_ingredientes[:3]]
+    ingredientes_ingles = [TRADUCTOR_API.get(ing.lower(), ing.lower()) for ing in lista_ingredientes[:3]]
     ingredientes_query = ",".join(ingredientes_ingles)
     
     url_servidor = f"https://api.spoonacular.com/recipes/complexSearch?includeIngredients={ingredientes_query}&addRecipeInformation=true&fillIngredients=true&number=4&apiKey={API_KEY}"
-    
     try:
         respuesta = requests.get(url_servidor)
         if respuesta.status_code == 200:
-            datos = respuesta.json()
-            return datos.get("results", [])
-        else:
-            return {"error": f"Error del servidor: {respuesta.status_code}"}
+            return respuesta.json().get("results", [])
+        return {"error": f"Error del servidor: {respuesta.status_code}"}
     except Exception as e:
         return {"error": f"Error de conexión: {e}"}
 
@@ -280,22 +201,18 @@ recetas_totales.extend(cargar_recetas_usuario())
 if "mis_ingredientes" not in st.session_state:
     st.session_state["mis_ingredientes"] = cargar_despensa_guardada()
 
-# --- HERO BANNER (Estructurado con clases CSS Fluidas) ---
+# --- HERO BANNER ---
 st.markdown("""
-    <div style="background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%); 
-                padding: 30px 25px; 
-                border-radius: 24px; 
-                margin-bottom: 25px;
-                box-shadow: 0 15px 35px rgba(255, 87, 34, 0.3);">
-        <h1 class="hero-title" style="color: white !important; font-size: 3.3rem; margin: 0; font-weight: 900; letter-spacing: -1px;">🔥 NEVERA.AI</h1>
-        <p class="hero-subtitle" style="color: rgba(255,255,255,0.9) !important; font-size: 1.15rem; margin: 5px 0 0 0; font-weight: 500;">
-            El primer asistente de cocina que exprime tu despensa al 100%.
+    <div style="background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%); padding: 25px 20px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 12px 30px rgba(255, 87, 34, 0.25);">
+        <h1 class="hero-title" style="color: white !important; font-size: 2.8rem; margin: 0; font-weight: 900; letter-spacing: -1px;">🔥 NEVERA.AI</h1>
+        <p class="hero-subtitle" style="color: rgba(255,255,255,0.9) !important; font-size: 1.05rem; margin: 5px 0 0 0; font-weight: 500;">
+            El asistente que exprime tu despensa al 100%.
         </p>
     </div>
 """, unsafe_allow_html=True)
 
 # --- BARRA LATERAL ---
-st.sidebar.markdown("### 📊 RESUMEN DE TU APP")
+st.sidebar.markdown("### 📊 RESUMEN")
 col_s1, col_s2 = st.sidebar.columns(2)
 col_s1.metric(label="RECETAS LOC.", value=len(recetas_totales))
 col_s2.metric(label="EN NEVERA", value=len(st.session_state["mis_ingredientes"]))
@@ -319,146 +236,140 @@ mapa_filtros = {
 }
 filtro_interno = mapa_filtros.get(filtro_limpio, "Mostrar todo")
 
-# --- PESTAÑAS PRINCIPALES ---
-pestaña_buscar, pestaña_nube, pestaña_añadir = st.tabs(["🔍 MOTOR LOCAL", "🌐 BÚSQUEDA MUNDIAL (API)", "➕ AÑADIR RECETA"])
+# --- PESTAÑAS ---
+pestaña_buscar, pestaña_nube, pestaña_añadir = st.tabs(["🔍 MOTOR LOCAL", "🌐 BASE MUNDIAL", "➕ AÑADIR PLATO"])
 
 with pestaña_buscar:
     st.write("")
     with st.container(border=True):
-        st.markdown("<h3 style='margin-top: 0; color: #00FFA3 !important;'>[ 01 ] TU INVENTARIO ACTUAL</h3>", unsafe_allow_html=True)
-        st.write("Selecciona tus alimentos base para buscar en el sistema local:")
+        st.markdown("<h4 style='margin-top: 0; color: #00FFA3 !important;'>[ 01 ] TU INVENTARIO ACTUAL</h4>", unsafe_allow_html=True)
+        st.write("Escribe o selecciona cualquier alimento libremente:")
+        
+        # 💡 LA MAGIA: Permitimos cualquier texto libre en el multiselect usando una lista expandida dinámica
+        opciones_disponibles = list(set(INGREDIENTES_PLATAFORMA + st.session_state["mis_ingredientes"]))
         
         ingredientes_usuario = st.multiselect(
-            "Selecciona tus ingredientes:",
-            INGREDIENTES_PLATAFORMA,
+            "Escribe o selecciona ingredientes:",
+            options=opciones_disponibles,
             default=st.session_state["mis_ingredientes"],
             label_visibility="collapsed"
         )
         
         st.write("")
-        col_btn1, col_btn2, _ = st.columns([2.5, 3.5, 6])
-        with col_btn1:
-            if st.button("💾 GUARDAR ESTADO", use_container_width=True):
-                st.session_state["mis_ingredientes"] = ingredientes_usuario
-                guardar_despensa_en_disco(ingredientes_usuario)
-                st.toast("Inventario sincronizado", icon="✅")
-        with col_btn2:
-            btn_buscar = st.button("⚡ GENERAR MENÚ LOCAL", type="primary", use_container_width=True)
+        # Botones limpios en vertical para pantallas pequeñas
+        if st.button("💾 GUARDAR ESTADO NEVERA"):
+            st.session_state["mis_ingredientes"] = ingredientes_usuario
+            guardar_despensa_en_disco(ingredientes_usuario)
+            st.toast("Nevera guardada con éxito", icon="✅")
+            
+        btn_buscar = st.button("⚡ GENERAR MENÚ RESPONSIVO")
 
     st.write("")
 
     if btn_buscar:
-        with st.spinner("🔥 Procesando combinaciones algorítmicas locales..."):
-            time.sleep(0.5)
-        
         recetas_listas = []
         recetas_casi_listas = []
-        ingredientes_tengo = set(ingredientes_usuario)
+        ingredientes_tengo = set([i.lower() for i in ingredientes_usuario])
         
         for receta in recetas_totales:
             if filtro_interno != "Mostrar todo" and receta["categoria"] != filtro_interno:
                 continue
             
-            ingredientes_receta = set(receta["ingredientes"])
+            ingredientes_receta = set([i.lower() for i in receta["ingredientes"]])
             ingredientes_faltantes = ingredientes_receta.difference(ingredientes_tengo)
-            datos_resultado = {"receta": receta, "faltan": list(ingredientes_faltantes)}
             
             if len(ingredientes_faltantes) == 0:
-                recetas_listas.append(datos_resultado)
+                recetas_listas.append(receta)
             elif len(ingredientes_faltantes) <= 2:
-                recetas_casi_listas.append(datos_resultado)
+                recetas_casi_listas.append({"receta": receta, "faltan": list(ingredientes_faltantes)})
         
-        col_izq, col_der = st.columns(2)
-        with col_izq:
-            st.markdown("### 🟢 LISTOS PARA COCINAR")
-            if recetas_listas:
-                for item in recetas_listas:
-                    r = item["receta"]
-                    badge_class = "b-fuerza" if "Fuerza" in r['categoria'] else "b-def" if "Definición" in r['categoria'] else "b-cardio" if "Cardio" in r['categoria'] else "b-cheat"
-                    with st.expander(f"✨ {r['nombre']}"):
-                        st.markdown(f"<span class='badge {badge_class}'>{r['categoria']}</span>", unsafe_allow_html=True)
-                        st.markdown(f"<p style='color: #94A3B8 !important;'><b>INGREDIENTES:</b> <span style='color: #F8FAFC !important;'>{', '.join(r['ingredientes'])}</span></p>", unsafe_allow_html=True)
-                        st.info(r["instrucciones"])
-            else:
-                st.info("No tienes ingredientes suficientes en la base local.")
+        # 📱 DISEÑO CARD VERTICAL (Evitamos columnas estrechas para que respire en el móvil)
+        st.markdown("### 🟢 LISTOS PARA COCINAR YA")
+        if recetas_listas:
+            for r in recetas_listas:
+                badge_class = "b-fuerza" if "Fuerza" in r['categoria'] else "b-def" if "Definición" in r['categoria'] else "b-cardio" if "Cardio" in r['categoria'] else "b-cheat"
+                st.markdown(f"""
+                    <div class="receta-card">
+                        <span class="badge {badge_class}">{r['categoria']}</span>
+                        <h3 style="margin: 5px 0 12px 0; color:#FFFFFF;">✨ {r['nombre']}</h3>
+                        <p style="color: #94A3B8; font-size:0.9rem; margin-bottom:10px;"><b>LLEVA:</b> {', '.join(r['ingredientes'])}</p>
+                        <div class="instrucciones-box"><b>PASOS:</b> {r['instrucciones']}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("No hay recetas locales exactas con tus ingredientes.")
 
-        with col_der:
-            st.markdown("### 🟡 TE FALTA MUY POCO")
-            if recetas_casi_listas:
-                for item in recetas_casi_listas:
-                    r = item["receta"]
-                    badge_class = "b-fuerza" if "Fuerza" in r['categoria'] else "b-def" if "Definición" in r['categoria'] else "b-cardio" if "Cardio" in r['categoria'] else "b-cheat"
-                    faltantes_texto = ", ".join(item["faltan"])
-                    with st.expander(f"⚠️ {r['nombre']} (Faltan {len(item['faltan'])})"):
-                        st.markdown(f"<span class='badge {badge_class}'>{r['categoria']}</span>", unsafe_allow_html=True)
-                        st.markdown(f"<p style='color: #94A3B8 !important;'><b>LLEVA:</b> <span style='color: #F8FAFC !important;'>{', '.join(r['ingredientes'])}</span></p>", unsafe_allow_html=True)
-                        st.markdown(f"<p style='color: #FF5722 !important; font-weight: 700;'>🛒 COMPRAR: {faltantes_texto.upper()}</p>", unsafe_allow_html=True)
-                        st.text(r["instrucciones"])
+        st.markdown("### 🟡 TE FALTA MUY POCO (MÁX. 2 FALTANTES)")
+        if recetas_casi_listas:
+            for item in recetas_casi_listas:
+                r = item["receta"]
+                badge_class = "b-fuerza" if "Fuerza" in r['categoria'] else "b-def" if "Definición" in r['categoria'] else "b-cardio" if "Cardio" in r['categoria'] else "b-cheat"
+                faltan_str = ", ".join(item['faltan']).upper()
+                st.markdown(f"""
+                    <div class="receta-card" style="border-left: 4px solid #FF5722;">
+                        <span class="badge {badge_class}">{r['categoria']}</span>
+                        <h3 style="margin: 5px 0 12px 0; color:#FFFFFF;">⚠️ {r['nombre']}</h3>
+                        <p style="color: #94A3B8; font-size:0.9rem; margin-bottom:4px;"><b>LLEVA:</b> {', '.join(r['ingredientes'])}</p>
+                        <p style="color: #FF5722; font-size:0.95rem; font-weight:700; margin-bottom:12px;">🛒 FALTA COMPRAR: {faltan_str}</p>
+                        <div class="instrucciones-box" style="border-left-color:#FF5722;"><b>PASOS:</b> {r['instrucciones']}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("No hay platos locales cercanos.")
 
-# --- PESTAÑA DE CONEXIÓN A INTERNET (API) ---
+# --- PESTAÑA NUBE ---
 with pestaña_nube:
     st.write("")
     with st.container(border=True):
-        st.markdown("<h3 style='margin-top: 0; color: #00FFA3 !important;'>🌐 CONEXIÓN A BASE MUNDIAL</h3>", unsafe_allow_html=True)
-        st.write("Tu inventario actual se enviará a un servidor externo para buscar recetas detalladas.")
+        st.markdown("<h4 style='margin-top: 0; color: #00FFA3 !important;'>🌐 BÚSQUEDA MUNDIAL (API)</h4>", unsafe_allow_html=True)
+        st.write("Se buscará en la red externa usando tus 3 primeros alimentos.")
         
-        if st.button("🌍 BUSCAR EN INTERNET CON MI NEVERA ACTUAL", type="primary", use_container_width=True):
+        if st.button("🌍 LANZAR CONSULTA EN LA RED"):
             if len(st.session_state["mis_ingredientes"]) == 0:
-                st.warning("Guarda ingredientes en tu nevera primero en la pestaña 'MOTOR LOCAL'.")
+                st.warning("Añade algún ingrediente primero.")
             else:
-                with st.spinner("Descargando instrucciones y fotografías..."):
+                with st.spinner("Conectando con servidores..."):
                     resultados_api = buscar_recetas_en_internet(st.session_state["mis_ingredientes"])
                     
                 if isinstance(resultados_api, dict) and "error" in resultados_api:
                     st.error(resultados_api["error"])
                 elif len(resultados_api) == 0:
-                    st.info("La API no ha encontrado recetas completas con esos ingredientes.")
+                    st.info("No se encontraron platos en la API.")
                 else:
-                    st.success(f"¡Éxito! Se han descargado {len(resultados_api)} recetas de la nube.")
-                    
                     for receta_api in resultados_api:
                         with st.container(border=True):
-                            col_foto, col_datos = st.columns([1, 3])
-                            with col_foto:
-                                st.image(receta_api["image"], use_container_width=True)
-                            with col_datos:
-                                st.markdown(f"### {receta_api['title']}")
-                                
-                                usados = [ing["name"] for ing in receta_api.get("usedIngredients", [])]
-                                faltan = [ing["name"] for ing in receta_api.get("missedIngredients", [])]
-                                
-                                st.markdown(f"<p style='color: #00FFA3 !important;'><b>✓ Ingredientes usados:</b> {', '.join(usados)}</p>", unsafe_allow_html=True)
-                                if faltan:
-                                    st.markdown(f"<p style='color: #FF5722 !important;'><b>✗ Te faltaría comprar:</b> {', '.join(faltan)}</p>", unsafe_allow_html=True)
-                                
-                                instrucciones = receta_api.get("instructions")
-                                if instrucciones:
-                                    st.markdown("<p style='color:#F8FAFC !important; font-weight:bold; margin-top:15px;'>// PROTOCOLO DE PREPARACIÓN:</p>", unsafe_allow_html=True)
-                                    st.markdown(f"<div style='background-color: #1A2130; padding: 15px; border-radius: 8px; border-left: 4px solid #00FFA3; color: #E2E8F0; font-family: \"JetBrains Mono\", monospace; font-size: 0.9rem;'>{instrucciones}</div>", unsafe_allow_html=True)
-                                else:
-                                    st.markdown("<p style='color:#94A3B8; font-style:italic;'>El autor de esta receta no proporcionó pasos detallados.</p>", unsafe_allow_html=True)
+                            st.image(receta_api["image"], use_container_width=True)
+                            st.markdown(f"### {receta_api['title']}")
+                            
+                            usados = [ing["name"] for ing in receta_api.get("usedIngredients", [])]
+                            faltan = [ingimientos["name"] for ingimientos in receta_api.get("missedIngredients", [])]
+                            
+                            st.markdown(f"<p style='color: #00FFA3;'><b>✓ Tienes:</b> {', '.join(usados)}</p>", unsafe_allow_html=True)
+                            if faltan:
+                                st.markdown(f"<p style='color: #FF5722;'><b>✗ Falta comprar:</b> {', '.join(faltan)}</p>", unsafe_allow_html=True)
+                            
+                            instrucciones = receta_api.get("instructions")
+                            if instrucciones:
+                                st.markdown(f"<div class='instrucciones-box'>{instrucciones}</div>", unsafe_allow_html=True)
 
+# --- PESTAÑA AÑADIR ---
 with pestaña_añadir:
     st.write("")
     with st.container(border=True):
-        st.markdown("<h3 style='margin-top: 0; color: #00FFA3 !important;'>[ 02 ] COLABORAR CON LA RED</h3>", unsafe_allow_html=True)
+        st.markdown("<h4 style='margin-top: 0; color: #00FFA3 !important;'>[ 02 ] COLABORAR CON LA RED</h4>", unsafe_allow_html=True)
         
-        col_form1, col_form2 = st.columns(2)
-        with col_form1:
-            nuevo_nombre = st.text_input("NOMBRE DEL PLATO:", placeholder="Ej: Bowl proteico de atún")
-            nueva_categoria = st.selectbox(
-                "OBJETIVO:",
-                ["Alta en Proteína / Fuerza", "Bajo en Carbohidratos / Definición", "Energía / Cardio", "Permitido / Cheat Meal Sano"]
-            )
-        with col_form2:
-            nuevos_ingredientes = st.multiselect(
-                "INGREDIENTES QUE LLEVA:",
-                INGREDIENTES_PLATAFORMA
-            )
+        nuevo_nombre = st.text_input("NOMBRE DEL PLATO:", placeholder="Ej: Wok de pollo express")
+        nueva_categoria = st.selectbox(
+            "OBJETIVO FITNESS:",
+            ["Alta en Proteína / Fuerza", "Bajo en Carbohidratos / Definición", "Energía / Cardio", "Permitido / Cheat Meal Sano"]
+        )
         
-        nuevas_instrucciones = st.text_area("INSTRUCCIONES:", placeholder="Explica cómo se prepara...")
+        # Aquí también permitimos meter ingredientes inventados al crear una receta local
+        opciones_crear = list(set(INGREDIENTES_PLATAFORMA + st.session_state["mis_ingredientes"]))
+        nuevos_ingredientes = st.multiselect("INGREDIENTES QUE LLEVA:", options=opciones_crear)
+        nuevas_instrucciones = st.text_area("INSTRUCCIONES DE PREPARACIÓN:")
         
-        if st.button("🚀 SUBIR AL SERVIDOR", type="primary"):
+        if st.button("🚀 SUBIR AL SERVIDOR LOCAL"):
             if nuevo_nombre and nuevos_ingredientes and nuevas_instrucciones:
                 receta_nueva_dict = {
                     "nombre": nuevo_nombre,
@@ -468,8 +379,8 @@ with pestaña_añadir:
                 }
                 guardar_receta_usuario(receta_nueva_dict)
                 st.balloons()
-                st.success("¡Receta procesada y guardada en la base de datos!")
+                st.success("¡Plato guardado!")
                 time.sleep(1)
                 st.rerun()
             else:
-                st.error("Rellena todos los campos para continuar.")
+                st.error("Por favor, rellena todos los campos.")
