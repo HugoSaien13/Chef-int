@@ -103,7 +103,7 @@ st.markdown("""
         border-radius: 14px !important;
         padding: 0.8rem 2rem !important;
         font-weight: 900 !important;
-        width: 100% !important; /* Ancho completo por defecto */
+        width: 100% !important;
         box-shadow: 0 6px 20px rgba(255, 87, 34, 0.3) !important;
     }
     
@@ -243,24 +243,39 @@ with pestaña_buscar:
     st.write("")
     with st.container(border=True):
         st.markdown("<h4 style='margin-top: 0; color: #00FFA3 !important;'>[ 01 ] TU INVENTARIO ACTUAL</h4>", unsafe_allow_html=True)
-        st.write("Escribe o selecciona cualquier alimento libremente:")
+        st.write("Escribe aquí abajo cualquier alimento nuevo que tengas:")
         
-        # 💡 LA MAGIA: Permitimos cualquier texto libre en el multiselect usando una lista expandida dinámica
-        opciones_disponibles = list(set(INGREDIENTES_PLATAFORMA + st.session_state["mis_ingredientes"]))
-        
+        # Entrada libre de texto con botón dedicado para inyectar alimentos
+        col_input, col_add_btn = st.columns([8, 2])
+        with col_input:
+            nuevo_alimento_libre = st.text_input("Añadir alimento extra:", placeholder="Ej: hummus, rebozuelos, salsa sriracha...", label_visibility="collapsed")
+        with col_add_btn:
+            if st.button("➕", use_container_width=True):
+                if nuevo_alimento_libre:
+                    alimento_limpio = nuevo_alimento_libre.strip().lower()
+                    if alimento_limpio not in st.session_state["mis_ingredientes"]:
+                        st.session_state["mis_ingredientes"].append(alimento_limpio)
+                        guardar_despensa_en_disco(st.session_state["mis_ingredientes"])
+                        st.toast(f"¡{alimento_limpio} añadido!", icon="🧺")
+                        st.rerun()
+
+        st.write("---")
+        st.write("Gestiona o elimina los alimentos guardados en tu stock:")
+
+        opciones_dinamicas = list(set(INGREDIENTES_PLATAFORMA + st.session_state["mis_ingredientes"]))
         ingredientes_usuario = st.multiselect(
-            "Escribe o selecciona ingredientes:",
-            options=opciones_disponibles,
+            "Tus alimentos activos:",
+            options=opciones_dinamicas,
             default=st.session_state["mis_ingredientes"],
             label_visibility="collapsed"
         )
         
         st.write("")
-        # Botones limpios en vertical para pantallas pequeñas
-        if st.button("💾 GUARDAR ESTADO NEVERA"):
+        if st.button("💾 CONFIRMAR Y GUARDAR NEVERA"):
             st.session_state["mis_ingredientes"] = ingredientes_usuario
             guardar_despensa_en_disco(ingredientes_usuario)
-            st.toast("Nevera guardada con éxito", icon="✅")
+            st.toast("Nevera sincronizada", icon="✅")
+            st.rerun()
             
         btn_buscar = st.button("⚡ GENERAR MENÚ RESPONSIVO")
 
@@ -283,7 +298,6 @@ with pestaña_buscar:
             elif len(ingredientes_faltantes) <= 2:
                 recetas_casi_listas.append({"receta": receta, "faltan": list(ingredientes_faltantes)})
         
-        # 📱 DISEÑO CARD VERTICAL (Evitamos columnas estrechas para que respire en el móvil)
         st.markdown("### 🟢 LISTOS PARA COCINAR YA")
         if recetas_listas:
             for r in recetas_listas:
@@ -364,7 +378,6 @@ with pestaña_añadir:
             ["Alta en Proteína / Fuerza", "Bajo en Carbohidratos / Definición", "Energía / Cardio", "Permitido / Cheat Meal Sano"]
         )
         
-        # Aquí también permitimos meter ingredientes inventados al crear una receta local
         opciones_crear = list(set(INGREDIENTES_PLATAFORMA + st.session_state["mis_ingredientes"]))
         nuevos_ingredientes = st.multiselect("INGREDIENTES QUE LLEVA:", options=opciones_crear)
         nuevas_instrucciones = st.text_area("INSTRUCCIONES DE PREPARACIÓN:")
