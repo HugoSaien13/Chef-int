@@ -8,12 +8,13 @@ from recetas import BASE_DE_DATOS_RECETAS, INGREDIENTES_PLATAFORMA
 # Configuración de página
 st.set_page_config(page_title="Nevera.ai | Cocina Inteligente", page_icon="🔥", layout="wide")
 
-# --- INYECCIÓN DE DISEÑO "MIDNIGHT PREMIUM" ---
+# --- INYECCIÓN DE DISEÑO "MIDNIGHT PREMIUM RESPONSIVO" ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Plus+Jakarta+Sans:wght@500;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
+    /* Fondo oscuro inmersivo */
     .stApp {
         background-color: #0B0E14 !important;
         background-image: radial-gradient(circle at 50% 0%, #1D2330 0%, #0B0E14 70%);
@@ -25,6 +26,7 @@ st.markdown("""
     footer {visibility: hidden;}
     header {background: transparent !important;}
 
+    /* Títulos generales */
     h1, h2, h3, h4, p, label, li {
         color: #F8FAFC !important;
         font-family: 'Outfit', sans-serif !important;
@@ -34,11 +36,13 @@ st.markdown("""
         font-family: 'Material Symbols Rounded' !important;
     }
 
+    /* BARRA LATERAL (SIDEBAR) Y FILTROS */
     [data-testid="stSidebar"] {
         background-color: #0B0E14 !important;
         border-right: 1px solid #1D2330 !important;
     }
     
+    /* FILTRO FITNESS: Paneles elegantes */
     div[role="radiogroup"] > label {
         background: rgba(29, 35, 48, 0.5) !important;
         padding: 10px 15px !important;
@@ -53,7 +57,6 @@ st.markdown("""
         background: rgba(255, 87, 34, 0.08) !important;
         transform: translateX(4px) !important;
     }
-    
     div[role="radiogroup"] label p, div[role="radiogroup"] label span {
         color: #F8FAFC !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
@@ -61,6 +64,7 @@ st.markdown("""
         margin: 0 !important;
     }
 
+    /* Pestañas (Tabs) */
     .stTabs [data-baseweb="tab-list"] {
         background-color: #131823 !important;
         border-radius: 16px;
@@ -81,6 +85,7 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4) !important;
     }
 
+    /* Contenedores y Tarjetas */
     div[data-testid="stVerticalBlock"] > div[border="true"] {
         background: rgba(19, 24, 35, 0.6) !important;
         backdrop-filter: blur(10px);
@@ -90,6 +95,7 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
     }
 
+    /* Desplegables de Recetas (Expanders) */
     div[data-testid="stExpander"] {
         background: linear-gradient(145deg, #161B27 0%, #0F131D 100%) !important;
         border: 1px solid #2A3143 !important;
@@ -126,6 +132,7 @@ st.markdown("""
         font-weight: 700 !important;
     }
 
+    /* BOTONES */
     div.stButton > button:first-child {
         background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%) !important;
         color: #FFFFFF !important;
@@ -151,11 +158,6 @@ st.markdown("""
         color: #94A3B8 !important;
         box-shadow: none !important;
     }
-    div[data-testid="stHorizontalBlock"] div.stButton > button:first-child:hover {
-        background: #2A3143 !important;
-        color: #FFFFFF !important;
-        border-color: #00FFA3 !important;
-    }
 
     .badge {
         display: inline-block;
@@ -173,13 +175,47 @@ st.markdown("""
     .b-cheat { background: rgba(255, 64, 129, 0.1); color: #FF4081; border: 1px solid rgba(255, 64, 129, 0.3); }
     
     img { border-radius: 12px; }
+
+    /* =========================================================================
+       🚨 SMARTPHONE MEDIA QUERY: Parámetros específicos para móviles (Pantallas < 768px)
+       ========================================================================= */
+    @media (max-width: 768px) {
+        /* Hacemos que las dos columnas de resultados se apilen verticalmente en el móvil */
+        div[data-testid="stHorizontalBlock"] {
+            flex-direction: column !important;
+            gap: 15px !important;
+        }
+        div[data-testid="stHorizontalBlock"] > div {
+            width: 100% !important; /* Fuerza a ocupar todo el ancho del móvil */
+        }
+        /* Reducimos el tamaño de la cabecera para que no ocupe toda la pantalla del teléfono */
+        .hero-title {
+            font-size: 2.2rem !important;
+        }
+        .hero-subtitle {
+            font-size: 1rem !important;
+        }
+        /* Hacemos los botones más cómodos para pulsar con el dedo ocupando el ancho completo */
+        div.stButton > button:first-child {
+            width: 100% !important;
+            padding: 1rem 2rem !important;
+        }
+        /* Ajuste de padding en contenedores para ganar espacio útil */
+        div[data-testid="stVerticalBlock"] > div[border="true"] {
+            padding: 15px !important;
+        }
+        /* Estilo compacto para los selectores de pestañas en móvil */
+        .stTabs [data-baseweb="tab"] {
+            padding: 8px 12px !important;
+            font-size: 0.85rem !important;
+        }
+    }
     </style>
 """, unsafe_allow_html=True)
 
 ARCHIVO_DESPENSA = "despensa.json"
 ARCHIVO_RECETAS_USUARIO = "mis_recetas_usuario.json"
 
-# --- DICCIONARIO PARA LA API ---
 TRADUCTOR_API = {
     "huevos": "eggs", "champiñones": "mushrooms", "pechuga de pavo": "turkey", 
     "avena": "oats", "leche": "milk", "platano": "banana", "pechuga de pollo": "chicken breast", 
@@ -192,7 +228,6 @@ TRADUCTOR_API = {
     "tomate": "tomato"
 }
 
-# --- LÓGICA DE ALMACENAMIENTO ---
 def cargar_despensa_guardada():
     if os.path.exists(ARCHIVO_DESPENSA):
         with open(ARCHIVO_DESPENSA, "r", encoding="utf-8") as f:
@@ -217,15 +252,13 @@ def guardar_receta_usuario(nueva_receta):
     with open(ARCHIVO_RECETAS_USUARIO, "w", encoding="utf-8") as f:
         json.dump(recetas_actuales, f, ensure_ascii=False, indent=4)
 
-# --- CONEXIÓN A LA API ---
 def buscar_recetas_en_internet(lista_ingredientes):
     # ⚠️ PEGA AQUÍ TU CLAVE REAL DE SPOONACULAR
-    API_KEY = "TU_API_KEY_AQUI" 
+    API_KEY = "ecab73f0fc0049828ba7f97537a20e77" 
     
     if API_KEY == "TU_API_KEY_AQUI":
         return {"error": "Falta la API Key. Regístrate en spoonacular.com/food-api y pon tu clave en el código."}
         
-    # TRADUCIR Y LIMITAR: Solo cogemos los 3 primeros ingredientes para no bloquear la búsqueda
     ingredientes_ingles = [TRADUCTOR_API.get(ing, ing) for ing in lista_ingredientes[:3]]
     ingredientes_query = ",".join(ingredientes_ingles)
     
@@ -247,20 +280,17 @@ recetas_totales.extend(cargar_recetas_usuario())
 if "mis_ingredientes" not in st.session_state:
     st.session_state["mis_ingredientes"] = cargar_despensa_guardada()
 
-# --- HERO BANNER ---
+# --- HERO BANNER (Estructurado con clases CSS Fluidas) ---
 st.markdown("""
     <div style="background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%); 
-                padding: 40px 30px; 
+                padding: 30px 25px; 
                 border-radius: 24px; 
-                margin-bottom: 30px;
-                box-shadow: 0 15px 35px rgba(255, 87, 34, 0.3);
-                display: flex; justify-content: space-between; align-items: center;">
-        <div>
-            <h1 style="color: white !important; font-size: 3.5rem; margin: 0; font-weight: 900; letter-spacing: -1px;">🔥 NEVERA.AI</h1>
-            <p style="color: rgba(255,255,255,0.9) !important; font-size: 1.2rem; margin: 5px 0 0 0; font-weight: 500;">
-                El primer asistente de cocina que exprime tu despensa al 100%.
-            </p>
-        </div>
+                margin-bottom: 25px;
+                box-shadow: 0 15px 35px rgba(255, 87, 34, 0.3);">
+        <h1 class="hero-title" style="color: white !important; font-size: 3.3rem; margin: 0; font-weight: 900; letter-spacing: -1px;">🔥 NEVERA.AI</h1>
+        <p class="hero-subtitle" style="color: rgba(255,255,255,0.9) !important; font-size: 1.15rem; margin: 5px 0 0 0; font-weight: 500;">
+            El primer asistente de cocina que exprime tu despensa al 100%.
+        </p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -289,7 +319,7 @@ mapa_filtros = {
 }
 filtro_interno = mapa_filtros.get(filtro_limpio, "Mostrar todo")
 
-# --- 3 PESTAÑAS ---
+# --- PESTAÑAS PRINCIPALES ---
 pestaña_buscar, pestaña_nube, pestaña_añadir = st.tabs(["🔍 MOTOR LOCAL", "🌐 BÚSQUEDA MUNDIAL (API)", "➕ AÑADIR RECETA"])
 
 with pestaña_buscar:
@@ -319,7 +349,7 @@ with pestaña_buscar:
 
     if btn_buscar:
         with st.spinner("🔥 Procesando combinaciones algorítmicas locales..."):
-            time.sleep(0.7)
+            time.sleep(0.5)
         
         recetas_listas = []
         recetas_casi_listas = []
@@ -369,8 +399,8 @@ with pestaña_buscar:
 with pestaña_nube:
     st.write("")
     with st.container(border=True):
-        st.markdown("<h3 style='margin-top: 0; color: #00FFA3 !important;'>🌐 CONEXIÓN A BASE MUNDIAL (SPOONACULAR)</h3>", unsafe_allow_html=True)
-        st.write("Tu inventario actual se enviará a un servidor externo para buscar recetas detalladas. (Se usarán los 3 ingredientes principales).")
+        st.markdown("<h3 style='margin-top: 0; color: #00FFA3 !important;'>🌐 CONEXIÓN A BASE MUNDIAL</h3>", unsafe_allow_html=True)
+        st.write("Tu inventario actual se enviará a un servidor externo para buscar recetas detalladas.")
         
         if st.button("🌍 BUSCAR EN INTERNET CON MI NEVERA ACTUAL", type="primary", use_container_width=True):
             if len(st.session_state["mis_ingredientes"]) == 0:
@@ -397,7 +427,7 @@ with pestaña_nube:
                                 usados = [ing["name"] for ing in receta_api.get("usedIngredients", [])]
                                 faltan = [ing["name"] for ing in receta_api.get("missedIngredients", [])]
                                 
-                                st.markdown(f"<p style='color: #00FFA3 !important;'><b>✓ Ingredientes que tienes que usa:</b> {', '.join(usados)}</p>", unsafe_allow_html=True)
+                                st.markdown(f"<p style='color: #00FFA3 !important;'><b>✓ Ingredientes usados:</b> {', '.join(usados)}</p>", unsafe_allow_html=True)
                                 if faltan:
                                     st.markdown(f"<p style='color: #FF5722 !important;'><b>✗ Te faltaría comprar:</b> {', '.join(faltan)}</p>", unsafe_allow_html=True)
                                 
